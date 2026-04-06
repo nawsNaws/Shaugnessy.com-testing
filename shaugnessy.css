@@ -1,5 +1,5 @@
 body {
-    background-color: rgb(238, 219, 195);
+    background-image: url("https://i.pinimg.com/736x/52/64/e9/5264e9b82d3bdf0e3f23fcae57f84416.jpg");
     text-align: center;
     font-family: monospace;
     color:rgb(68, 48, 32)
@@ -7,4 +7,11 @@ body {
 
 img {
     width: 200px;
+}
+
+h1 {
+    font-size: 100px;
+    font-family: 'Times New Roman', Times, serif;
+    color: rgb(228, 132, 207);
+    text-shadow: 2px 2px 4px #a52e81;
 }
