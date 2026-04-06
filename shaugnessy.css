@@ -12,8 +12,8 @@ img {
 h1 {
     font-size: 100px;
     font-family: 'Unbounded', 'Times New Roman', serif;
-    color: rgb(228, 132, 207);
-    text-shadow: 2px 2px 4px #a52e81;
+    color: rgb(175, 219, 181);
+    text-shadow: 2px 2px 4px #51bfce;
 }
 
 nav ul {
@@ -40,4 +40,30 @@ nav li a {
 
 nav li a:hover {
     background-color: rgba(228, 132, 207, 0.5);
+}
+
+.unbounded-default {
+  font-family: "Unbounded", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+p{ 
+    font-size: 20px;
+    font-family: 'Unbounded', monospace;
+    color: rgb(22, 21, 41);
+}
+
+.intro {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.intro img {
+    width: 150px;
+    height: auto;
+    border-radius: 10px;
 }
