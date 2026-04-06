@@ -11,7 +11,33 @@ img {
 
 h1 {
     font-size: 100px;
-    font-family: 'Times New Roman', Times, serif;
+    font-family: 'Unbounded', 'Times New Roman', serif;
     color: rgb(228, 132, 207);
     text-shadow: 2px 2px 4px #a52e81;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 10px;
+    background-color: rgba(255, 238, 249, 0.8);
+    display: flex;
+    justify-content: space-around;
+}
+
+nav li {
+    display: block;
+}
+
+nav li a {
+    display: block;
+    color: rgb(68, 48, 32);
+    text-align: center;
+    padding: 20px 16px;
+    text-decoration: none;
+    font-family: monospace;
+}
+
+nav li a:hover {
+    background-color: rgba(228, 132, 207, 0.5);
 }
