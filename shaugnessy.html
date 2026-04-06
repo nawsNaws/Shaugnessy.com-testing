@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-<html>
     <head>
         <title>Shaugnessy's website</title>
         <!-- getting google fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@200..900&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Belleza&family=Unbounded:wght@200..900&display=swap" rel="stylesheet">
 
         <link rel="stylesheet" href="shaugnessy.css" />
     </head>
@@ -18,10 +18,22 @@
                 <li><a href="#projects">Projects/What I'm Working On</a></li>
             </ul>
         </nav>
-        <h1>Hi, I'm Shaugnessy</h1>
-        <div class="intro">
-            <p>I'm a [your profession/role], passionate about [interests]. I love [hobbies] and am always working on exciting projects. Welcome to my website!</p>
-            <img src="https://i.pinimg.com/736x/03/b1/fa/03b1fa54621117bf1476f0866b7d24aa.jpg" alt="Profile picture or something fun"/>
+        <div class="hero">
+            <div class="hero-left">
+                <h1>Hi, I'm<br>Shaugnessy</h1>
+                <div class="intro">
+                    <p>I'm a [your profession/role], passionate about [interests]. I love [hobbies] and am always working on exciting projects. Welcome to my website!</p>
+                </div>
+            </div>
+            <div class="carousel">
+                <button class="carousel-button prev" aria-label="Previous slide">&#9664;</button>
+                <div class="carousel-inner">
+                    <img src="me1.jpg" class="slide active" alt="Slide 1">
+                    <img src="me2.jpg" class="slide" alt="Slide 2">
+                    <img src="me3.jpg" class="slide" alt="Slide 3">
+                </div>
+                <button class="carousel-button next" aria-label="Next slide">&#9654;</button>
+            </div>
         </div>
 
         <section id="socials">
@@ -46,6 +58,27 @@
             <p>Project 2: [Description of another project]</p>
             <p>I'm currently working on [upcoming project].</p>
         </section>
+
+        <script>
+            const slides = document.querySelectorAll('.carousel .slide');
+            let currentSlide = 0;
+
+            function showSlide(index) {
+                if (index < 0) index = slides.length - 1;
+                if (index >= slides.length) index = 0;
+                slides[currentSlide].classList.remove('active');
+                slides[index].classList.add('active');
+                currentSlide = index;
+            }
+
+            document.querySelector('.carousel-button.prev').addEventListener('click', () => {
+                showSlide(currentSlide - 1);
+            });
+
+            document.querySelector('.carousel-button.next').addEventListener('click', () => {
+                showSlide(currentSlide + 1);
+            });
+        </script>
 
     </body>
 </html>
