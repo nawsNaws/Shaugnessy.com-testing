@@ -145,10 +145,10 @@
                 return result;
             }
 
-            // Compact encoding using a larger OCR-friendly alphabet to shorten ciphertext.
+            // Compact encoding using an OCR-friendly alphabet that is uppercase-only.
             // Alphabet avoids commonly confused glyphs (I, O, l, 0, 1 removed) and adds safe digits/symbols.
             // Format: 3-character length prefix (base-N) + base-N body (most-significant first).
-            const ALLOWED = 'ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz234679@#%&+-=$';
+            const ALLOWED = 'ABCDEFGHJKMNPQRSTUVWXYZ234679@#%&+-=$';
             const BASE = BigInt(ALLOWED.length);
 
             function encodeLengthAsPrefix(len) {
@@ -200,6 +200,7 @@
             function decryptMessage(cipher, key) {
                 key = normalizeKey(key);
                 cipher = (cipher || '').replace(/\s/g, '');
+                cipher = cipher.toUpperCase();
                 // remove any characters not in the allowed alphabet (OCR may insert punctuation)
                 cipher = cipher.split('').filter(ch => ALLOWED.includes(ch)).join('');
 
@@ -240,7 +241,7 @@
 
                 // 2) common OCR -> letters (map digits/similar to letters)
                 const toLetters = {
-                    '1': 'l', 'I': 'l', '|': 'l', '0': 'O', 'o': 'O', '5': 'S', '2': 'Z', '8': 'B', '6': 'G'
+                    '1': 'I', '|': 'I', '0': 'O', '5': 'S', '2': 'Z', '8': 'B', '6': 'G'
                 };
                 let mapped = cipher.replace(/./g, ch => toLetters[ch] || ch);
                 res = tryDecode(mapped);
@@ -248,15 +249,13 @@
 
                 // 3) common OCR -> digits (map letters to digits)
                 const toDigits = {
-                    'l': '1', 'I': '1', 'O': '0', 'o': '0', 'S': '5', 'Z': '2', 'B': '8', 'G': '6'
+                    'I': '1', 'O': '0', 'S': '5', 'Z': '2', 'B': '8', 'G': '6'
                 };
                 mapped = cipher.replace(/./g, ch => toDigits[ch] || ch);
                 res = tryDecode(mapped);
                 if (res && res !== 'Invalid encrypted text') return res;
 
-                // 4) try case-normalized variants (all-lowercase then all-uppercase)
-                res = tryDecode(cipher.toLowerCase());
-                if (res && res !== 'Invalid encrypted text') return res;
+                // 4) try uppercase normalization only
                 res = tryDecode(cipher.toUpperCase());
                 if (res && res !== 'Invalid encrypted text') return res;
 
