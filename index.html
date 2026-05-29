@@ -198,6 +198,7 @@
 
             function decryptMessage(cipher, key) {
                 key = normalizeKey(key);
+                cipher = cipher.replace(/\s/g, '');
                 if (!cipher || cipher.length < 3) return '';
                 const prefix = cipher.slice(0, 3);
                 const len = decodePrefixToLength(prefix);
