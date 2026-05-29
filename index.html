@@ -16,13 +16,14 @@
                 <li><a href="#socials">Socials & Contact</a></li>
                 <li><a href="#about">Info/About</a></li>
                 <li><a href="#projects">Projects/What I'm Working On</a></li>
+                <li><a href="#decrypter">Decrypter</a></li>
             </ul>
         </nav>
         <div class="hero">
             <div class="hero-left">
                 <h1>Hi, I'm<br>Shaugnessy</h1>
                 <div class="intro">
-                    <p>I'm a [your profession/role], passionate about [interests]. I love [hobbies] and am always working on exciting projects. Welcome to my website!</p>
+                    <p>I'm a high school student, passionate about STEM and technology. I love drawing and am always working on exciting projects. Welcome to my website!</p>
                 </div>
             </div>
             <div class="carousel">
@@ -53,8 +54,8 @@
         <section id="about">
             <h2>Info/About</h2>
             <p>Learn more about me and what I do.</p>
-            <p>I'm passionate about [your interests], and I enjoy [hobbies].</p>
-            <p>Currently, I'm [brief bio or current status].</p>
+            <p>I'm passionate about STEM and technology, and I enjoy drawing.</p>
+            <p>Currently, I'm a high school student with a strong interest in computer science and engineering.</p>
         </section>
 
         <section id="projects">
@@ -72,10 +73,26 @@
 
         <section id="decrypter">
             <h2>Decrypter</h2>
-            <p>Decrypt text:</p>
-                <input type="text" id="decryptedText" placeholder="Enter encrypted text">
-            <p>Encrypt text</p>
-                <input type="text" id="encryptedText" placeholder="Enter text to encrypt">
+            <p>Encrypt or decrypt messages with a shared passphrase.</p>
+            <div class="cipher-group">
+                <label for="cipherText">Message</label>
+                <textarea id="cipherText" placeholder="Type a message to encrypt or paste encrypted text"></textarea>
+            </div>
+            <div class="cipher-group">
+                <label for="cipherKey">Passphrase</label>
+                <div class="pass-wrap">
+                    <input type="password" id="cipherKey" placeholder="Enter passphrase">
+                    <button type="button" id="toggleKeyView" class="view-toggle" aria-pressed="false" title="Show passphrase">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg>
+                    </button>
+                </div>
+            </div>
+            <div class="cipher-buttons">
+                <button id="encryptButton">Encrypt</button>
+                <button id="decryptButton">Decrypt</button>
+            </div>
+            <p>Result:</p>
+            <p id="resultantText" class="result-output"></p>
         </section>
 
         <script>
@@ -97,6 +114,103 @@
             document.querySelector('.carousel-button.next').addEventListener('click', () => {
                 showSlide(currentSlide + 1);
             });
+
+            const cipherText = document.getElementById('cipherText');
+            const cipherKey = document.getElementById('cipherKey');
+            const resultantText = document.getElementById('resultantText');
+            const encryptButton = document.getElementById('encryptButton');
+            const decryptButton = document.getElementById('decryptButton');
+
+            const CHAR_START = 32;
+            const CHAR_RANGE = 95; // printable ASCII characters 32-126
+
+            function normalizeKey(key) {
+                return key && key.length ? key : 'default';
+            }
+
+            function cipherTransform(text, key, direction) {
+                key = normalizeKey(key);
+                let result = '';
+                for (let i = 0; i < text.length; i++) {
+                    const charCode = text.charCodeAt(i);
+                    if (charCode < CHAR_START || charCode >= CHAR_START + CHAR_RANGE) {
+                        result += text[i];
+                        continue;
+                    }
+                    const keyCode = key.charCodeAt(i % key.length) - CHAR_START;
+                    const shift = direction * keyCode;
+                    const normalized = (charCode - CHAR_START + shift + CHAR_RANGE) % CHAR_RANGE;
+                    result += String.fromCharCode(normalized + CHAR_START);
+                }
+                return result;
+            }
+
+            function encryptMessage(message, key) {
+                return cipherTransform(message, key, 1);
+            }
+
+            function decryptMessage(cipher, key) {
+                return cipherTransform(cipher, key, -1);
+            }
+
+            encryptButton.addEventListener('click', () => {
+                const message = cipherText.value;
+                const key = cipherKey.value.trim();
+                if (!message) {
+                    resultantText.textContent = 'Enter a message to encrypt.';
+                    return;
+                }
+                if (!key) {
+                    resultantText.textContent = 'Enter a passphrase to use for encryption.';
+                    return;
+                }
+                if (key !== 'checkmate') {
+                    resultantText.textContent = 'wrong passphrase';
+                    return;
+                }
+                resultantText.textContent = encryptMessage(message, key);
+            });
+
+            decryptButton.addEventListener('click', () => {
+                const cipher = cipherText.value;
+                const key = cipherKey.value.trim();
+                if (!cipher) {
+                    resultantText.textContent = 'Enter encrypted text to decrypt.';
+                    return;
+                }
+                if (!key) {
+                    resultantText.textContent = 'Enter the shared passphrase to decrypt.';
+                    return;
+                }
+                if (key !== 'checkmate') {
+                    resultantText.textContent = 'wrong passphrase';
+                    return;
+                }
+                resultantText.textContent = decryptMessage(cipher, key);
+            });
+
+            // setup toggle button for passphrase visibility
+            const toggleKeyView = document.getElementById('toggleKeyView');
+            if (toggleKeyView) {
+                const eyeOpen = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg>';
+                const eyeOff = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a20.5 20.5 0 0 1 4.11-5.2"/><path d="M1 1l22 22"/></svg>';
+                // initial icon (hidden state)
+                toggleKeyView.innerHTML = eyeOpen;
+                toggleKeyView.addEventListener('click', () => {
+                    const isShown = cipherKey.type === 'text';
+                    if (isShown) {
+                        cipherKey.type = 'password';
+                        toggleKeyView.innerHTML = eyeOpen;
+                        toggleKeyView.setAttribute('aria-pressed', 'false');
+                        toggleKeyView.title = 'Show passphrase';
+                    } else {
+                        cipherKey.type = 'text';
+                        toggleKeyView.innerHTML = eyeOff;
+                        toggleKeyView.setAttribute('aria-pressed', 'true');
+                        toggleKeyView.title = 'Hide passphrase';
+                    }
+                });
+            }
         </script>
 
     </body>
