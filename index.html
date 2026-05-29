@@ -145,12 +145,87 @@
                 return result;
             }
 
+            // Compact encoding: pack plaintext (base-95) into base-N using ALLOWED characters.
+            // Format: 3-character length prefix (base-70) + base-70 body (most-significant first).
+            const ALLOWED = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~#%&@+=$';
+            const BASE = BigInt(ALLOWED.length); // 70
+
+            function encodeLengthAsPrefix(len) {
+                // encode len into 3 base-70 chars
+                let n = len;
+                const parts = [];
+                for (let p = 2; p >= 0; p--) {
+                    const pow = Math.pow(ALLOWED.length, p);
+                    const d = Math.floor(n / pow) % ALLOWED.length;
+                    parts.push(ALLOWED[d]);
+                    n -= d * pow;
+                }
+                return parts.join('');
+            }
+
+            function decodePrefixToLength(prefix) {
+                let len = 0;
+                for (let i = 0; i < prefix.length; i++) {
+                    const d = ALLOWED.indexOf(prefix[i]);
+                    if (d === -1) return 0;
+                    len = len * ALLOWED.length + d;
+                }
+                return len;
+            }
+
             function encryptMessage(message, key) {
-                return cipherTransform(message, key, 1);
+                key = normalizeKey(key);
+                let big = 0n;
+                const base95 = BigInt(CHAR_RANGE);
+                for (let i = 0; i < message.length; i++) {
+                    const charCode = message.charCodeAt(i);
+                    const code = (charCode < CHAR_START || charCode >= CHAR_START + CHAR_RANGE) ? (charCode % CHAR_RANGE) : (charCode - CHAR_START);
+                    const keyCode = key.charCodeAt(i % key.length) - CHAR_START;
+                    const val = (code + keyCode + CHAR_RANGE) % CHAR_RANGE; // 0..94
+                    big = big * base95 + BigInt(val);
+                }
+                // convert big (base-95 number) into base-70 string
+                if (big === 0n && message.length === 0) return encodeLengthAsPrefix(0);
+                const digits = [];
+                while (big > 0n) {
+                    const rem = Number(big % BASE);
+                    digits.push(ALLOWED[rem]);
+                    big = big / BASE;
+                }
+                const body = digits.length ? digits.reverse().join('') : ALLOWED[0];
+                return encodeLengthAsPrefix(message.length) + body;
             }
 
             function decryptMessage(cipher, key) {
-                return cipherTransform(cipher, key, -1);
+                key = normalizeKey(key);
+                if (!cipher || cipher.length < 3) return '';
+                const prefix = cipher.slice(0, 3);
+                const len = decodePrefixToLength(prefix);
+                const body = cipher.slice(3) || ALLOWED[0];
+                // rebuild big from base-70 body
+                let big = 0n;
+                for (let i = 0; i < body.length; i++) {
+                    const d = ALLOWED.indexOf(body[i]);
+                    if (d === -1) return 'Invalid encrypted text';
+                    big = big * BASE + BigInt(d);
+                }
+                const base95 = BigInt(CHAR_RANGE);
+                const vals = new Array(len).fill(0);
+                for (let i = len - 1; i >= 0; i--) {
+                    if (big === 0n) {
+                        vals[i] = 0;
+                    } else {
+                        vals[i] = Number(big % base95);
+                        big = big / base95;
+                    }
+                }
+                let out = '';
+                for (let i = 0; i < len; i++) {
+                    const keyCode = key.charCodeAt(i % key.length) - CHAR_START;
+                    const orig = ((vals[i] - keyCode) % CHAR_RANGE + CHAR_RANGE) % CHAR_RANGE + CHAR_START;
+                    out += String.fromCharCode(orig);
+                }
+                return out;
             }
 
             encryptButton.addEventListener('click', () => {
