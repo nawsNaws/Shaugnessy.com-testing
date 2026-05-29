@@ -198,35 +198,60 @@
 
             function decryptMessage(cipher, key) {
                 key = normalizeKey(key);
-                cipher = cipher.replace(/\s/g, '');
-                if (!cipher || cipher.length < 3) return '';
-                const prefix = cipher.slice(0, 3);
-                const len = decodePrefixToLength(prefix);
-                const body = cipher.slice(3) || ALLOWED[0];
-                // rebuild big from base-70 body
-                let big = 0n;
-                for (let i = 0; i < body.length; i++) {
-                    const d = ALLOWED.indexOf(body[i]);
-                    if (d === -1) return 'Invalid encrypted text';
-                    big = big * BASE + BigInt(d);
-                }
-                const base95 = BigInt(CHAR_RANGE);
-                const vals = new Array(len).fill(0);
-                for (let i = len - 1; i >= 0; i--) {
-                    if (big === 0n) {
-                        vals[i] = 0;
-                    } else {
-                        vals[i] = Number(big % base95);
-                        big = big / base95;
+                cipher = (cipher || '').replace(/\s/g, '');
+
+                function tryDecode(txt) {
+                    if (!txt || txt.length < 3) return '';
+                    const prefix = txt.slice(0, 3);
+                    const len = decodePrefixToLength(prefix);
+                    const body = txt.slice(3) || ALLOWED[0];
+                    // rebuild big from base-70 body
+                    let big = 0n;
+                    for (let i = 0; i < body.length; i++) {
+                        const d = ALLOWED.indexOf(body[i]);
+                        if (d === -1) return 'Invalid encrypted text';
+                        big = big * BASE + BigInt(d);
                     }
+                    const base95 = BigInt(CHAR_RANGE);
+                    const vals = new Array(len).fill(0);
+                    for (let i = len - 1; i >= 0; i--) {
+                        if (big === 0n) {
+                            vals[i] = 0;
+                        } else {
+                            vals[i] = Number(big % base95);
+                            big = big / base95;
+                        }
+                    }
+                    let out = '';
+                    for (let i = 0; i < len; i++) {
+                        const keyCode = key.charCodeAt(i % key.length) - CHAR_START;
+                        const orig = ((vals[i] - keyCode) % CHAR_RANGE + CHAR_RANGE) % CHAR_RANGE + CHAR_START;
+                        out += String.fromCharCode(orig);
+                    }
+                    return out;
                 }
-                let out = '';
-                for (let i = 0; i < len; i++) {
-                    const keyCode = key.charCodeAt(i % key.length) - CHAR_START;
-                    const orig = ((vals[i] - keyCode) % CHAR_RANGE + CHAR_RANGE) % CHAR_RANGE + CHAR_START;
-                    out += String.fromCharCode(orig);
-                }
-                return out;
+
+                // 1) try as-is
+                let res = tryDecode(cipher);
+                if (res && res !== 'Invalid encrypted text') return res;
+
+                // 2) common OCR -> letters (map digits/similar to letters)
+                const toLetters = {
+                    '1': 'l', 'I': 'l', '|': 'l', '0': 'O', 'o': 'O', '5': 'S', '2': 'Z', '8': 'B', '6': 'G'
+                };
+                let mapped = cipher.replace(/./g, ch => toLetters[ch] || ch);
+                res = tryDecode(mapped);
+                if (res && res !== 'Invalid encrypted text') return res;
+
+                // 3) common OCR -> digits (map letters to digits)
+                const toDigits = {
+                    'l': '1', 'I': '1', 'O': '0', 'o': '0', 'S': '5', 'Z': '2', 'B': '8', 'G': '6'
+                };
+                mapped = cipher.replace(/./g, ch => toDigits[ch] || ch);
+                res = tryDecode(mapped);
+                if (res && res !== 'Invalid encrypted text') return res;
+
+                return res; // final result (likely error or empty)
             }
 
             encryptButton.addEventListener('click', () => {
