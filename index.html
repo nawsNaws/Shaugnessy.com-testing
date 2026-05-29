@@ -199,6 +199,8 @@
             function decryptMessage(cipher, key) {
                 key = normalizeKey(key);
                 cipher = (cipher || '').replace(/\s/g, '');
+                // remove any characters not in the allowed alphabet (OCR may insert punctuation)
+                cipher = cipher.split('').filter(ch => ALLOWED.includes(ch)).join('');
 
                 function tryDecode(txt) {
                     if (!txt || txt.length < 3) return '';
