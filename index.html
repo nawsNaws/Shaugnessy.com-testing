@@ -145,10 +145,11 @@
                 return result;
             }
 
-            // Compact encoding: pack plaintext (base-95) into base-N using ALLOWED characters.
-            // Format: 3-character length prefix (base-70) + base-70 body (most-significant first).
-            const ALLOWED = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~#%&@+=$';
-            const BASE = BigInt(ALLOWED.length); // 70
+            // Compact encoding using a larger OCR-friendly alphabet to shorten ciphertext.
+            // Alphabet avoids commonly confused glyphs (I, O, l, 0, 1 removed) and adds safe digits/symbols.
+            // Format: 3-character length prefix (base-N) + base-N body (most-significant first).
+            const ALLOWED = 'ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz234679@#%&+-=$';
+            const BASE = BigInt(ALLOWED.length);
 
             function encodeLengthAsPrefix(len) {
                 // encode len into 3 base-70 chars
