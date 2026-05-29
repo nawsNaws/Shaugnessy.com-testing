@@ -251,6 +251,12 @@
                 res = tryDecode(mapped);
                 if (res && res !== 'Invalid encrypted text') return res;
 
+                // 4) try case-normalized variants (all-lowercase then all-uppercase)
+                res = tryDecode(cipher.toLowerCase());
+                if (res && res !== 'Invalid encrypted text') return res;
+                res = tryDecode(cipher.toUpperCase());
+                if (res && res !== 'Invalid encrypted text') return res;
+
                 return res; // final result (likely error or empty)
             }
 
