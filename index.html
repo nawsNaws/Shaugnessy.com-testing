@@ -137,8 +137,11 @@
             };
 
             for (let i = 0; i < PLAINTEXT_ALPHABET.length; i++) {
-                ENCODE_MAP[PLAINTEXT_ALPHABET[i]] = CIPHERTEXT_ALPHABET[i];
-                DECODE_MAP[CIPHERTEXT_ALPHABET[i]] = PLAINTEXT_ALPHABET[i];
+                const p = PLAINTEXT_ALPHABET[i];
+                const c = CIPHERTEXT_ALPHABET[i];
+                ENCODE_MAP[p] = c; // uppercase mapping
+                ENCODE_MAP[p.toLowerCase()] = c; // lowercase input maps too
+                DECODE_MAP[c] = p.toLowerCase(); // decode to lowercase plaintext
             }
 
             function normalizeKey(key) {
@@ -146,8 +149,10 @@
             }
 
             function normalizeCiphertext(ciphertext) {
+                // preserve single spaces but remove newlines/tabs and collapse multispace
                 return (ciphertext || '')
-                    .replace(/\s+/g, '')
+                    .replace(/[\r\n\t]+/g, ' ')
+                    .replace(/ {2,}/g, ' ')
                     .split('')
                     .map(ch => OCR_NORMALIZATION[ch] || ch.toUpperCase())
                     .join('');
@@ -155,11 +160,11 @@
 
             function encryptMessage(message, key) {
                 key = normalizeKey(key);
-                const upper = message.toUpperCase();
                 let result = '';
-                for (let i = 0; i < upper.length; i++) {
-                    const ch = upper[i];
-                    result += ENCODE_MAP[ch] || ch;
+                for (let i = 0; i < message.length; i++) {
+                    const ch = message[i];
+                    // prefer direct mapping, fall back to uppercase mapping
+                    result += ENCODE_MAP[ch] || ENCODE_MAP[ch.toUpperCase()] || ch;
                 }
                 return result;
             }
@@ -172,7 +177,7 @@
                     const ch = normalized[i];
                     result += DECODE_MAP[ch] || ch;
                 }
-                return result;
+                return result.toLowerCase();
             }
 
             encryptButton.addEventListener('click', () => {
