@@ -121,145 +121,58 @@
             const encryptButton = document.getElementById('encryptButton');
             const decryptButton = document.getElementById('decryptButton');
 
-            const CHAR_START = 32;
-            const CHAR_RANGE = 95; // printable ASCII characters 32-126
+            const PLAINTEXT_ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            const CIPHERTEXT_ALPHABET = '23456789ABCDEFGHJKLMNPQRST';
+            const ENCODE_MAP = {};
+            const DECODE_MAP = {};
+            const OCR_NORMALIZATION = {
+                '0': 'Q',
+                'O': 'Q',
+                'o': 'Q',
+                '1': 'L',
+                'I': 'L',
+                'i': 'L',
+                'Z': '2',
+                'z': '2'
+            };
+
+            for (let i = 0; i < PLAINTEXT_ALPHABET.length; i++) {
+                ENCODE_MAP[PLAINTEXT_ALPHABET[i]] = CIPHERTEXT_ALPHABET[i];
+                DECODE_MAP[CIPHERTEXT_ALPHABET[i]] = PLAINTEXT_ALPHABET[i];
+            }
 
             function normalizeKey(key) {
                 return key && key.length ? key : 'default';
             }
 
-            function cipherTransform(text, key, direction) {
-                key = normalizeKey(key);
-                let result = '';
-                for (let i = 0; i < text.length; i++) {
-                    const charCode = text.charCodeAt(i);
-                    if (charCode < CHAR_START || charCode >= CHAR_START + CHAR_RANGE) {
-                        result += text[i];
-                        continue;
-                    }
-                    const keyCode = key.charCodeAt(i % key.length) - CHAR_START;
-                    const shift = direction * keyCode;
-                    const normalized = (charCode - CHAR_START + shift + CHAR_RANGE) % CHAR_RANGE;
-                    result += String.fromCharCode(normalized + CHAR_START);
-                }
-                return result;
-            }
-
-            // Compact encoding using an OCR-friendly alphabet that is uppercase-only.
-            // Alphabet avoids commonly confused glyphs (I, O, l, 0, 1 removed) and adds safe digits/symbols.
-            // Format: 3-character length prefix (base-N) + base-N body (most-significant first).
-            const ALLOWED = 'ABCDEFGHJKMNPQRSTUVWXYZ234679@#%&+-=$';
-            const BASE = BigInt(ALLOWED.length);
-
-            function encodeLengthAsPrefix(len) {
-                // encode len into 3 base-70 chars
-                let n = len;
-                const parts = [];
-                for (let p = 2; p >= 0; p--) {
-                    const pow = Math.pow(ALLOWED.length, p);
-                    const d = Math.floor(n / pow) % ALLOWED.length;
-                    parts.push(ALLOWED[d]);
-                    n -= d * pow;
-                }
-                return parts.join('');
-            }
-
-            function decodePrefixToLength(prefix) {
-                let len = 0;
-                for (let i = 0; i < prefix.length; i++) {
-                    const d = ALLOWED.indexOf(prefix[i]);
-                    if (d === -1) return 0;
-                    len = len * ALLOWED.length + d;
-                }
-                return len;
+            function normalizeCiphertext(ciphertext) {
+                return (ciphertext || '')
+                    .replace(/\s+/g, '')
+                    .split('')
+                    .map(ch => OCR_NORMALIZATION[ch] || ch.toUpperCase())
+                    .join('');
             }
 
             function encryptMessage(message, key) {
                 key = normalizeKey(key);
-                let big = 0n;
-                const base95 = BigInt(CHAR_RANGE);
-                for (let i = 0; i < message.length; i++) {
-                    const charCode = message.charCodeAt(i);
-                    const code = (charCode < CHAR_START || charCode >= CHAR_START + CHAR_RANGE) ? (charCode % CHAR_RANGE) : (charCode - CHAR_START);
-                    const keyCode = key.charCodeAt(i % key.length) - CHAR_START;
-                    const val = (code + keyCode + CHAR_RANGE) % CHAR_RANGE; // 0..94
-                    big = big * base95 + BigInt(val);
+                const upper = message.toUpperCase();
+                let result = '';
+                for (let i = 0; i < upper.length; i++) {
+                    const ch = upper[i];
+                    result += ENCODE_MAP[ch] || ch;
                 }
-                // convert big (base-95 number) into base-70 string
-                if (big === 0n && message.length === 0) return encodeLengthAsPrefix(0);
-                const digits = [];
-                while (big > 0n) {
-                    const rem = Number(big % BASE);
-                    digits.push(ALLOWED[rem]);
-                    big = big / BASE;
-                }
-                const body = digits.length ? digits.reverse().join('') : ALLOWED[0];
-                return encodeLengthAsPrefix(message.length) + body;
+                return result;
             }
 
             function decryptMessage(cipher, key) {
                 key = normalizeKey(key);
-                cipher = (cipher || '').replace(/\s/g, '');
-                cipher = cipher.toUpperCase();
-                // remove any characters not in the allowed alphabet (OCR may insert punctuation)
-                cipher = cipher.split('').filter(ch => ALLOWED.includes(ch)).join('');
-
-                function tryDecode(txt) {
-                    if (!txt || txt.length < 3) return '';
-                    const prefix = txt.slice(0, 3);
-                    const len = decodePrefixToLength(prefix);
-                    const body = txt.slice(3) || ALLOWED[0];
-                    // rebuild big from base-70 body
-                    let big = 0n;
-                    for (let i = 0; i < body.length; i++) {
-                        const d = ALLOWED.indexOf(body[i]);
-                        if (d === -1) return 'Invalid encrypted text';
-                        big = big * BASE + BigInt(d);
-                    }
-                    const base95 = BigInt(CHAR_RANGE);
-                    const vals = new Array(len).fill(0);
-                    for (let i = len - 1; i >= 0; i--) {
-                        if (big === 0n) {
-                            vals[i] = 0;
-                        } else {
-                            vals[i] = Number(big % base95);
-                            big = big / base95;
-                        }
-                    }
-                    let out = '';
-                    for (let i = 0; i < len; i++) {
-                        const keyCode = key.charCodeAt(i % key.length) - CHAR_START;
-                        const orig = ((vals[i] - keyCode) % CHAR_RANGE + CHAR_RANGE) % CHAR_RANGE + CHAR_START;
-                        out += String.fromCharCode(orig);
-                    }
-                    return out;
+                const normalized = normalizeCiphertext(cipher);
+                let result = '';
+                for (let i = 0; i < normalized.length; i++) {
+                    const ch = normalized[i];
+                    result += DECODE_MAP[ch] || ch;
                 }
-
-                // 1) try as-is
-                let res = tryDecode(cipher);
-                if (res && res !== 'Invalid encrypted text') return res;
-
-                // 2) common OCR -> letters (map digits/similar to letters)
-                const toLetters = {
-                    '1': 'I', '|': 'I', '0': 'O', '5': 'S', '2': 'Z', '8': 'B', '6': 'G'
-                };
-                let mapped = cipher.replace(/./g, ch => toLetters[ch] || ch);
-                res = tryDecode(mapped);
-                if (res && res !== 'Invalid encrypted text') return res;
-
-                // 3) common OCR -> digits (map letters to digits)
-                const toDigits = {
-                    'I': '1', 'O': '0', 'S': '5', 'Z': '2', 'B': '8', 'G': '6'
-                };
-                mapped = cipher.replace(/./g, ch => toDigits[ch] || ch);
-                res = tryDecode(mapped);
-                if (res && res !== 'Invalid encrypted text') return res;
-
-                // 4) try uppercase normalization only
-                res = tryDecode(cipher.toUpperCase());
-                if (res && res !== 'Invalid encrypted text') return res;
-
-                return res; // final result (likely error or empty)
+                return result;
             }
 
             encryptButton.addEventListener('click', () => {
