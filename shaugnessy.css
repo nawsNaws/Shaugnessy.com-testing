@@ -11,7 +11,8 @@ html{
 }
 
 img {
-    width: 200px;
+    max-width: 100%;
+    display: block;
 }
 
 h1 {
@@ -177,80 +178,168 @@ footer{
     font-family: monospace;
 }
 
+.projectsList{
+    text-align: left;
+    font-size: 20px;
+}
+
 section {
     margin: 40px auto;
-    max-width: 800px;
-    padding-top:40px;
+    max-width: 1000px;
+    padding: 40px 24px;
 }
 
-.cipher-group {
-    margin: 16px 0;
+.section-heading {
     text-align: left;
+    margin-bottom: 24px;
 }
 
-.cipher-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: bold;
-}
-
-#cipherText {
-    width: 100%;
-    min-height: 120px;
-    padding: 12px;
-    border: 2px solid rgba(68, 48, 32, 0.35);
-    border-radius: 10px;
-    font-family: monospace;
-    font-size: 16px;
-}
-
-#cipherKey {
-    width: 100%;
-    padding: 10px;
-    border: 2px solid rgba(68, 48, 32, 0.35);
-    border-radius: 10px;
-    font-family: monospace;
-    font-size: 16px;
-}
-
-.cipher-buttons {
-    display: flex;
-    gap: 12px;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
-.cipher-buttons button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 8px;
-    background-color: rgb(175, 219, 181);
+.section-heading h2 {
+    font-family: 'Unbounded', 'Times New Roman', serif;
     color: rgb(68, 48, 32);
+    margin-bottom: 8px;
+    font-size: 32px;
+}
+
+.gallery-icon-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.gallery-icon-card {
+    display: block;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 24px;
+    text-decoration: none;
+    color: rgb(68, 48, 32);
+    box-shadow: 0 10px 24px rgba(68, 48, 32, 0.12);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.gallery-icon-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 28px rgba(68, 48, 32, 0.18);
+}
+
+.gallery-icon {
+    font-size: 40px;
+    margin-bottom: 12px;
+}
+
+.gallery-icon-card h3 {
+    font-family: 'Unbounded', 'Times New Roman', serif;
+    margin: 0 0 8px;
+    font-size: 20px;
+}
+
+.gallery-icon-card p {
+    margin: 0;
     font-size: 16px;
+    line-height: 1.5;
+    color: rgb(92, 74, 56);
+}
+
+.portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+}
+
+.portfolio-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 10px 24px rgba(68, 48, 32, 0.12);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
     cursor: pointer;
 }
 
-.cipher-buttons button:hover {
-    background-color: rgb(146, 201, 156);
+.portfolio-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 28px rgba(68, 48, 32, 0.18);
 }
 
-.result-output {
-    word-break: break-word;
-    background: rgba(255, 255, 255, 0.85);
-    padding: 12px;
-    border-radius: 10px;
-    margin-top: 12px;
+.portfolio-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
 }
 
-.pass-wrap {
-    display: flex;
-    gap: 8px;
+.image-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(20, 18, 22, 0.8);
+    display: none;
     align-items: center;
+    justify-content: center;
+    padding: 24px;
+    z-index: 1000;
 }
 
-.pass-wrap #cipherKey {
-    flex: 1;
-    min-width: 0;
+.image-modal.active {
+    display: flex;
+}
+
+.image-modal-content {
+    position: relative;
+    max-width: min(90vw, 900px);
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+}
+
+.image-modal-content img {
+    width: min(80vw, 760px);
+    max-height: 75vh;
+    object-fit: contain;
+    border-radius: 12px;
+}
+
+.image-modal-content p {
+    margin: 12px 0 0;
+    text-align: center;
+    font-size: 18px;
+    color: rgb(68, 48, 32);
+}
+
+.image-modal-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border: none;
+    background: rgba(68, 48, 32, 0.9);
+    color: white;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+body.modal-open {
+    overflow: hidden;
+}
+
+.portfolio-info {
+    padding: 16px;
+    text-align: left;
+}
+
+.portfolio-info h3 {
+    font-family: 'Unbounded', 'Times New Roman', serif;
+    margin: 0 0 6px;
+    color: rgb(68, 48, 32);
+    font-size: 18px;
+}
+
+.portfolio-info p {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.5;
+    color: rgb(92, 74, 56);
 }
 
 .view-toggle {
