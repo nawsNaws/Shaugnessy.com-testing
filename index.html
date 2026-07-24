@@ -11,97 +11,47 @@
         <link rel="stylesheet" href="shaugnessy.css" />
     </head>
     <body> 
-        <nav>
-            <ul>
-                <li><a href="#socials">Socials & Contact</a></li>
-                <li><a href="#about">Info/About</a></li>
-                <li><a href="#projects">What I'm Working On Right Now!</a></li>
-            </ul>
-        </nav>
         <div class="hero">
             <div class="hero-left">
-                <h1>Hi, I'm<br>Shaugnessy</h1>
+                <h1>Hi, I'm Shaugnessy</h1>
                 <div class="intro">
                     <p>I'm a student who loves to self learn and create. I love tennis, badminton, drawing, math, and I'm always working on something new. Welcome to my website!</p>
                 </div>
-            </div>
-            <div class="carousel">
-                <button class="carousel-button prev" aria-label="Previous slide">&#9664;</button>
-                <div class="carousel-inner">
-                    <img src="me1.jpg" class="slide active" alt="Slide 1">
-                    <img src="me2.jpg" class="slide" alt="Slide 2">
-                    <img src="me3.jpg" class="slide" alt="Slide 3">
-                </div>
-                <button class="carousel-button next" aria-label="Next slide">&#9654;</button>
             </div>
         </div>
 
         <section id="projects">
             <div class="section-heading">
-                <h2>Gallery Directory</h2>
                 <p>I have always been a visual learner, and I believe images can be a very powerful tool. That being said, please learn about me through some galleries!</p>
             </div>
 
             <div class="gallery-icon-grid">
                 <a class="gallery-icon-card" href="art-gallery.html">
-                    <div class="gallery-icon">🎨</div>
-                    <h3>Art Gallery</h3>
-                    <p>Explore my creative work and visual experiments.</p>
+                    <img src="brushes.png" alt="Art Gallery" class="gallery-icon-image">
                 </a>
 
                 <a class="gallery-icon-card" href="hobby-gallery.html">
-                    <div class="gallery-icon">🏸</div>
-                    <h3>Hobby Gallery</h3>
-                    <p>See the things I love doing outside of school.</p>
+                    <img src="lion-dance.png" alt="Hobby Gallery" class="gallery-icon-image">
                 </a>
 
                 <a class="gallery-icon-card" href="daily-life-gallery.html">
-                    <div class="gallery-icon">☀️</div>
-                    <h3>Daily Life Gallery</h3>
-                    <p>Get a glimpse of the everyday moments that shape me.</p>
+                    <img src="seal.png" alt="Daily Life Gallery" class="gallery-icon-image">
                 </a>
 
                 <a class="gallery-icon-card" href="bubble-tea-gallery.html">
-                    <div class="gallery-icon">🧋</div>
-                    <h3>Bubble Tea Gallery</h3>
-                    <p>A fun little collection of my favorite orders.</p>
+                    <img src="bubble-tea.png" alt="Bubble Tea Gallery" class="gallery-icon-image">
                 </a>
 
                 <a class="gallery-icon-card" href="goals-gallery.html">
-                    <div class="gallery-icon">🌱</div>
-                    <h3>Goals Gallery</h3>
-                    <p>Learn about the things I’m working toward.</p>
+                    <img src="computer-fish.png" alt="Goals Gallery" class="gallery-icon-image">
                 </a>
 
                 <a class="gallery-icon-card" href="in-progress-gallery.html">
-                    <div class="gallery-icon">✨</div>
-                    <h3>In Progress Gallery</h3>
-                    <p>See what I’m still building, learning, and growing.</p>
+                    <img src="star.png" alt="In Progress Gallery" class="gallery-icon-image">
                 </a>
             </div>
         </section>
 
-        <script>
-            // for the image carousel at the top of the page
-            const slides = document.querySelectorAll('.carousel .slide');
-            let currentSlide = 0;
-
-            function showSlide(index) {
-                if (index < 0) index = slides.length - 1;
-                if (index >= slides.length) index = 0;
-                slides[currentSlide].classList.remove('active');
-                slides[index].classList.add('active');
-                currentSlide = index;
-            }
-
-            document.querySelector('.carousel-button.prev').addEventListener('click', () => {
-                showSlide(currentSlide - 1);
-            });
-
-            document.querySelector('.carousel-button.next').addEventListener('click', () => {
-                showSlide(currentSlide + 1);
-            });
-        </script>
 
     </body>
 </html>
