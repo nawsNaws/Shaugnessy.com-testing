@@ -26,32 +26,80 @@
             </div>
 
             <div class="gallery-icon-grid">
-                <a class="gallery-icon-card" href="art-gallery.html">
+                <a class="gallery-icon-card" href="art-gallery.html" data-label="Art Gallery">
                     <img src="brushes.png" alt="Art Gallery" class="gallery-icon-image">
+                    <span class="gallery-label"></span>
                 </a>
 
-                <a class="gallery-icon-card" href="hobby-gallery.html">
+                <a class="gallery-icon-card" href="hobby-gallery.html" data-label="Hobby Gallery">
                     <img src="lion-dance.png" alt="Hobby Gallery" class="gallery-icon-image">
+                    <span class="gallery-label"></span>
                 </a>
 
-                <a class="gallery-icon-card" href="daily-life-gallery.html">
+                <a class="gallery-icon-card" href="daily-life-gallery.html" data-label="Daily Life Gallery">
                     <img src="seal.png" alt="Daily Life Gallery" class="gallery-icon-image">
+                    <span class="gallery-label"></span>
                 </a>
 
-                <a class="gallery-icon-card" href="bubble-tea-gallery.html">
+                <a class="gallery-icon-card" href="bubble-tea-gallery.html" data-label="Bubble Tea Gallery">
                     <img src="bubble-tea.png" alt="Bubble Tea Gallery" class="gallery-icon-image">
+                    <span class="gallery-label"></span>
                 </a>
 
-                <a class="gallery-icon-card" href="goals-gallery.html">
+                <a class="gallery-icon-card" href="goals-gallery.html" data-label="Goals Gallery">
                     <img src="computer-fish.png" alt="Goals Gallery" class="gallery-icon-image">
+                    <span class="gallery-label"></span>
                 </a>
 
-                <a class="gallery-icon-card" href="in-progress-gallery.html">
+                <a class="gallery-icon-card" href="in-progress-gallery.html" data-label="In Progress Gallery">
                     <img src="star.png" alt="In Progress Gallery" class="gallery-icon-image">
+                    <span class="gallery-label"></span>
                 </a>
             </div>
         </section>
 
+        <audio id="pencilSound" preload="auto" src="pencil-scratch.mp3"></audio>
+
+        <script>
+            const cards = document.querySelectorAll('.gallery-icon-card');
+            const sound = document.getElementById('pencilSound');
+
+            function typeLabel(label, text) {
+                label.textContent = '';
+                let i = 0;
+                const interval = setInterval(() => {
+                    label.textContent += text[i] || '';
+                    i += 1;
+                    if (i >= text.length) {
+                        clearInterval(interval);
+                    }
+                }, 35);
+                label.dataset.interval = interval;
+            }
+
+            cards.forEach(card => {
+                const label = card.querySelector('.gallery-label');
+                const text = card.dataset.label;
+
+                card.addEventListener('mouseenter', () => {
+                    if (sound) {
+                        sound.currentTime = 0;
+                        sound.play().catch(() => {});
+                    }
+                    label.textContent = '';
+                    typeLabel(label, text);
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    if (sound) {
+                        sound.pause();
+                        sound.currentTime = 0;
+                    }
+                    clearInterval(label.dataset.interval);
+                    label.textContent = '';
+                });
+            });
+        </script>
 
     </body>
 </html>

@@ -94,13 +94,37 @@ section {
 }
 
 .gallery-icon-card {
-    display: block;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-decoration: none;
     overflow: visible;
     transition: transform 0.25s ease;
 }
 
-.gallery-icon-card:nth-child(1) {
+.gallery-label {
+    margin-top: 10px;
+    color: rgb(92, 58, 32);
+    font-family: 'Unbounded', 'Times New Roman', serif;
+    font-size: 15px;
+    letter-spacing: 0.06em;
+    opacity: 0;
+    transform: translateY(6px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-align: center;
+    background: transparent;
+    padding: 0;
+    border: none;
+}
+
+.gallery-icon-card:hover .gallery-label {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.gallery-icon-card:hover {
     transform: rotate(-8deg);
 }
 
