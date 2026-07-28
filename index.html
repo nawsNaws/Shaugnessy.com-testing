@@ -11,6 +11,9 @@
         <link rel="stylesheet" href="shaugnessy.css" />
     </head>
     <body> 
+        <div id="nature-trail"></div>
+        <div id="lantern"></div>
+
         <div class="hero">
             <div class="hero-left">
                 <h1>Hi, I'm Shaugnessy</h1>
@@ -63,6 +66,33 @@
         <script>
             const cards = document.querySelectorAll('.gallery-icon-card');
             const sound = document.getElementById('pencilSound');
+            const natureTrail = document.getElementById('nature-trail');
+
+            function createNaturePiece(x, y) {
+                const piece = document.createElement('div');
+                const types = ['petal', 'leaf', 'flower'];
+                const type = types[Math.floor(Math.random() * types.length)];
+                piece.className = `nature-piece ${type}`;
+                piece.style.left = `${x}px`;
+                piece.style.top = `${y}px`;
+                piece.style.setProperty('--rotate', `${Math.random() * 360}deg`);
+                piece.style.setProperty('--drift-x', `${(Math.random() - 0.5) * 80}px`);
+                natureTrail.appendChild(piece);
+
+                setTimeout(() => piece.remove(), 1100);
+            }
+
+            let lastSpawnTime = 0;
+            const spawnInterval = 110;
+
+            document.addEventListener('mousemove', (event) => {
+                const now = performance.now();
+                if (now - lastSpawnTime < spawnInterval) {
+                    return;
+                }
+                lastSpawnTime = now;
+                createNaturePiece(event.clientX, event.clientY);
+            });
 
             function typeLabel(label, text) {
                 label.textContent = '';
