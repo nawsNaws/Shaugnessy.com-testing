@@ -20,28 +20,103 @@
         </div>
 
         <div class="portfolio-grid">
-            <article class="portfolio-card">
+            <article class="portfolio-card" data-title="Dreamscape Study" data-description="Digital illustration · 2026">
                 <img src="Illustration185.jpg" alt="Dreamscape illustration study">
                 <div class="portfolio-info">
                     <h3>Dreamscape Study</h3>
                     <p>Digital illustration · 2026</p>
                 </div>
             </article>
-            <article class="portfolio-card">
+            <article class="portfolio-card" data-title="Color Mood Piece" data-description="Character art · 2026">
                 <img src="Screenshot 2026-04-14 180219.jpg" alt="Colorful character piece">
                 <div class="portfolio-info">
                     <h3>Color Mood Piece</h3>
                     <p>Character art · 2026</p>
                 </div>
             </article>
-            <article class="portfolio-card">
+            <article class="portfolio-card" data-title="Studio Sketch" data-description="Traditional-inspired sketch · 2026">
                 <img src="Screenshot 2026-04-14 180252.jpg" alt="Detailed sketch illustration">
                 <div class="portfolio-info">
                     <h3>Studio Sketch</h3>
                     <p>Traditional-inspired sketch · 2026</p>
                 </div>
             </article>
+            <article class="portfolio-card" data-title="New Artwork" data-description="New visual piece · 2026">
+                <img src="Illustration194.png" alt="New artwork piece">
+                <div class="portfolio-info">
+                    <h3>New Artwork</h3>
+                    <p>New visual piece · 2026</p>
+                </div>
+            </article>
+            <article class="portfolio-card" data-title="Illustration 145" data-description="Digital piece · 2026">
+                <img src="Illustration145.png" alt="Illustration 145 artwork">
+                <div class="portfolio-info">
+                    <h3>Illustration 145</h3>
+                    <p>Digital piece · 2026</p>
+                </div>
+            </article>
+            <article class="portfolio-card" data-title="Illustration 163" data-description="Color concept piece · 2026">
+                <img src="Illustration163.png" alt="Illustration 163 artwork">
+                <div class="portfolio-info">
+                    <h3>Illustration 163</h3>
+                    <p>Color concept piece · 2026</p>
+                </div>
+            </article>
+            <article class="portfolio-card" data-title="Illustration 34" data-description="Sketch and texture study · 2026">
+                <img src="Illustration34.png" alt="Illustration 34 artwork">
+                <div class="portfolio-info">
+                    <h3>Illustration 34</h3>
+                    <p>Sketch and texture study · 2026</p>
+                </div>
+            </article>
         </div>
     </section>
+
+    <div class="image-modal" id="artModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="image-modal-content">
+            <button class="image-modal-close" id="modalClose" aria-label="Close">×</button>
+            <img id="modalImage" src="" alt="Enlarged artwork">
+            <p id="modalCaption"></p>
+        </div>
+    </div>
+
+    <script>
+        const artCards = document.querySelectorAll('.portfolio-card');
+        const modal = document.getElementById('artModal');
+        const modalImage = document.getElementById('modalImage');
+        const modalCaption = document.getElementById('modalCaption');
+        const modalClose = document.getElementById('modalClose');
+
+        function openModal(card) {
+            const img = card.querySelector('img');
+            modalImage.src = img.src;
+            modalImage.alt = img.alt;
+            modalCaption.textContent = card.dataset.description || card.dataset.title || '';
+            modal.classList.add('active');
+            document.body.classList.add('modal-open');
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+            document.body.classList.remove('modal-open');
+            modalImage.src = '';
+        }
+
+        artCards.forEach(card => {
+            card.addEventListener('click', () => openModal(card));
+        });
+
+        modalClose.addEventListener('click', closeModal);
+        modal.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && modal.classList.contains('active')) {
+                closeModal();
+            }
+        });
+    </script>
 </body>
 </html>

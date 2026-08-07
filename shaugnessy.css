@@ -8,6 +8,66 @@ body {
     overflow-x: hidden;
 }
 
+nav {
+    padding-top: 20px;
+}
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+nav li {
+    margin: 0;
+}
+
+nav a {
+    text-decoration: none;
+    color: rgb(68, 48, 32);
+    font-family: 'Marcellus', 'Times New Roman', serif;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+nav a:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+}
+
+.top-nav {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    max-width: 1200px;
+    margin: 20px auto 0;
+    padding: 0 20px;
+}
+
+.top-nav a {
+    text-decoration: none;
+    font-family: 'Marcellus', 'Times New Roman', serif;
+    font-size: 14px;
+    letter-spacing: 0.06em;
+    color: rgb(68, 48, 32);
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.top-nav a:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+}
+
 #nature-trail {
     position: fixed;
     inset: 0;
@@ -103,15 +163,15 @@ img {
 
 h1 {
     font-size: 72px;
-    font-family: 'Unbounded', 'Times New Roman', serif;
-    color: rgb(175, 219, 181);
-    text-shadow: 2px 2px 4px #51bfce;
+    font-family: 'Marcellus', 'Times New Roman', serif;
+    color: rgb(255, 255, 255);
+    text-shadow: 2px 2px 4px #96888e;
     white-space: nowrap;
 }
 
 p{ 
     font-size: 20px;
-    font-family: 'Belleza', 'Unbounded', monospace;
+    font-family: 'Belleza', 'Marcellus', monospace;
     color: rgb(22, 21, 41);
 }
 
@@ -160,16 +220,36 @@ section {
     padding: 8px 24px 24px;
 }
 
+.info-panel {
+    background: rgba(255, 255, 255, 0.84);
+    border-radius: 20px;
+    padding: 24px 28px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    margin-top: 40px;
+}
+
+.info-panel h2 {
+    font-family: 'Marcellus', 'Times New Roman', serif;
+    color: rgb(68, 48, 32);
+    margin: 0 0 10px;
+    font-size: 26px;
+}
+
+.info-panel p {
+    margin: 0;
+    font-size: 18px;
+    line-height: 1.6;
+}
+
 .section-heading {
     text-align: left;
     margin-bottom: 24px;
 }
 
 .section-heading h2 {
-    font-family: 'Unbounded', 'Times New Roman', serif;
-    color: rgb(68, 48, 32);
-    margin-bottom: 8px;
-    font-size: 32px;
+    font-family: "Marcellus", serif;
+    font-weight: 400;
+    font-style: normal;
 }
 
 .gallery-icon-grid {
@@ -187,27 +267,32 @@ section {
     text-decoration: none;
     overflow: visible;
     transition: transform 0.25s ease;
+    padding-bottom: 24px;
 }
 
 .gallery-label {
     margin-top: 10px;
     color: rgb(92, 58, 32);
-    font-family: 'Unbounded', 'Times New Roman', serif;
+    font-family: 'Marcellus', 'Times New Roman', serif;
     font-size: 15px;
     letter-spacing: 0.06em;
     opacity: 0;
-    transform: translateY(6px);
+    transform: translateX(-50%) translateY(6px);
     white-space: nowrap;
     overflow: hidden;
     text-align: center;
     background: transparent;
     padding: 0;
     border: none;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    min-height: 18px;
 }
 
 .gallery-icon-card:hover .gallery-label {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateX(-50%) translateY(0);
 }
 
 .gallery-icon-card:hover {
