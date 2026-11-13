@@ -431,6 +431,47 @@ h3 {
     line-height: 1.6;
 }
 
+.achievement-card {
+    border: 1px solid var(--line);
+    background: var(--white);
+}
+
+.achievement-card .section-kicker {
+    margin-bottom: 12px;
+}
+
+.daily-life-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.daily-life-grid img {
+    width: 100%;
+    height: 320px;
+    object-fit: cover;
+    background: var(--paper-deep);
+}
+
+@media (max-width: 850px) {
+    .daily-life-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    .daily-life-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    .daily-life-grid img {
+        height: auto;
+        max-height: 440px;
+        object-fit: contain;
+    }
+}
+
 .hobby-story-card {
     align-self: start;
     grid-column: 1 / -1;
