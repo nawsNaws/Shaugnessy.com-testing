@@ -321,6 +321,58 @@ h3 {
     padding: 76px 0 92px;
 }
 
+.resume-page {
+    width: min(940px, calc(100% - 64px));
+    margin: 0 auto;
+    padding: 76px 0 92px;
+}
+
+.resume-heading {
+    margin-bottom: 30px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+}
+
+.resume-heading h1 {
+    margin: 0;
+    font-size: clamp(38px, 5vw, 60px);
+    letter-spacing: -0.035em;
+    line-height: 1.2;
+}
+
+.resume-heading p {
+    max-width: 550px;
+    margin: 14px 0 0;
+    color: var(--muted);
+}
+
+.resume-download {
+    flex: 0 0 auto;
+    padding: 12px 16px;
+    border: 1px solid var(--line);
+    color: var(--ink);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: border-color 180ms ease, color 180ms ease;
+}
+
+.resume-download:hover {
+    border-color: var(--red);
+    color: var(--red);
+}
+
+.resume-viewer {
+    width: 100%;
+    height: min(78vh, 1050px);
+    min-height: 520px;
+    border: 1px solid var(--line);
+    background: var(--white);
+}
+
 .gallery-page .section-heading {
     max-width: 640px;
     margin-bottom: 42px;
@@ -377,6 +429,69 @@ h3 {
     color: var(--muted);
     font-size: 13px;
     line-height: 1.6;
+}
+
+.hobby-story-card {
+    align-self: start;
+    grid-column: 1 / -1;
+    border: 1px solid var(--line);
+    background: var(--white);
+}
+
+.hobby-story-card .portfolio-info {
+    padding: 22px;
+}
+
+.hobby-story-card .section-kicker {
+    margin-bottom: 12px;
+}
+
+.hobby-story-details {
+    margin-top: 20px;
+    border-top: 1px solid var(--line);
+}
+
+.hobby-story-details summary {
+    padding: 14px 0 2px;
+    color: var(--red);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    list-style: none;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.hobby-story-details summary::-webkit-details-marker {
+    display: none;
+}
+
+.hobby-story-details summary::after {
+    margin-left: 8px;
+    content: "+";
+    font-size: 16px;
+}
+
+.hobby-story-details[open] summary::after {
+    content: "−";
+}
+
+.hobby-story-details summary:focus-visible {
+    outline: 2px solid var(--red);
+    outline-offset: 4px;
+}
+
+.essay-copy p {
+    margin: 14px 0 0;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+.hobby-story-details[open] .essay-copy {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 32px;
 }
 
 .site-footer {
@@ -561,12 +676,32 @@ body.modal-open {
         padding: 54px 0 64px;
     }
 
+    .resume-page {
+        width: min(100% - 36px, 940px);
+        padding: 54px 0 64px;
+    }
+
+    .resume-heading {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .resume-viewer {
+        height: 72vh;
+        min-height: 420px;
+    }
+
     .gallery-page .section-heading {
         margin-bottom: 30px;
     }
 
     .portfolio-grid {
         gap: 24px 12px;
+    }
+
+    .hobby-story-details[open] .essay-copy {
+        grid-template-columns: 1fr;
     }
 
     .portfolio-card img {
