@@ -1,143 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Shaugnessy's website</title>
-        <!-- getting google fonts -->
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@200..900&display=swap" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css2?family=Belleza&family=Unbounded:wght@200..900&display=swap" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css2?family=Marcellus&display=swap" rel="stylesheet">
-
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="theme-color" content="#f6f5f0" />
+        <meta name="description" content="A collection of Shaugnessy's art, interests, and everyday inspirations." />
+        <title>Shaugnessy — A Small Collection</title>
         <link rel="stylesheet" href="shaugnessy.css" />
     </head>
-    <body> 
-        <div id="nature-trail"></div>
-        <div id="lantern"></div>
-
-        <nav class="top-nav" aria-label="Main navigation">
-            <a href="#about">About Me</a>
-            <a href="#contact">Contact</a>
+    <body>
+        <nav class="site-nav" aria-label="Main navigation">
+            <a class="site-mark" href="index.html">Shaugnessy</a>
+            <ul class="nav-links">
+                <li><a href="#projects">Collections</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
         </nav>
 
-        <div class="hero">
-            <div class="hero-left">
-                <h1>Hi, I'm Shaugnessy</h1>
-                <div class="intro">
-                    <p>I have always been a visual learner, and I believe images can be a very powerful tool. That being said, please learn about me through some galleries!</p>
+        <main>
+            <section class="hero" aria-labelledby="welcome-heading">
+                <div class="hero-left">
+                    <p class="eyebrow">A small collection · Est. 2026</p>
+                    <h1 id="welcome-heading">Hi, I'm <span>Shaugnessy.</span></h1>
+                    <div class="intro">
+                        <p>I have always been a visual learner, and I believe images can be a very powerful tool. Take a quiet look around and get to know me through the things I make and love.</p>
+                    </div>
+                    <div class="hero-actions">
+                        <a class="text-link" href="#projects">Explore the collections</a>
+                        <span class="hero-note">Made slowly, with care</span>
+                    </div>
                 </div>
+                <div class="hero-art">
+                    <img src="Illustration185.jpg" alt="A featured illustration from Shaugnessy's collection" />
+                    <p class="art-caption">A moment in color</p>
+                </div>
+            </section>
+
+            <section id="projects" class="home-section" aria-labelledby="collections-heading">
+                <div class="section-heading">
+                    <p class="section-kicker">Browse by subject</p>
+                    <h2 id="collections-heading">The collections</h2>
+                </div>
+                <div class="gallery-icon-grid">
+                    <a class="gallery-icon-card" href="art-gallery.html">
+                        <img src="brushes.png" alt="" class="gallery-icon-image" />
+                        <span class="gallery-label">Art</span>
+                    </a>
+                    <a class="gallery-icon-card" href="hobby-gallery.html">
+                        <img src="lion-dance.png" alt="" class="gallery-icon-image" />
+                        <span class="gallery-label">Hobbies</span>
+                    </a>
+                    <a class="gallery-icon-card" href="daily-life-gallery.html">
+                        <img src="seal.png" alt="" class="gallery-icon-image" />
+                        <span class="gallery-label">Daily life</span>
+                    </a>
+                    <a class="gallery-icon-card" href="bubble-tea-gallery.html">
+                        <img src="bubble-tea.png" alt="" class="gallery-icon-image" />
+                        <span class="gallery-label">Food &amp; drink</span>
+                    </a>
+                    <a class="gallery-icon-card" href="goals-gallery.html">
+                        <img src="computer-fish.png" alt="" class="gallery-icon-image" />
+                        <span class="gallery-label">Goals</span>
+                    </a>
+                </div>
+            </section>
+
+            <div class="info-wrap">
+                <section id="about" class="info-panel">
+                    <p class="section-kicker">A little about me</p>
+                    <h2>Curiosity, made visible.</h2>
+                    <p>I’m a curious student who loves learning by creating. I enjoy drawing, exploring new ideas, and turning interests into projects that feel personal and meaningful.</p>
+                </section>
+                <section id="contact" class="info-panel">
+                    <p class="section-kicker">Say hello</p>
+                    <h2>Thanks for stopping by.</h2>
+                    <p>I’m always happy to connect with people who enjoy creativity, learning, and thoughtful projects.</p>
+                </section>
             </div>
-        </div>
+        </main>
 
-        <section id="projects">
-            <div class="gallery-icon-grid">
-                <a class="gallery-icon-card" href="art-gallery.html" data-label="Art Gallery">
-                    <img src="brushes.png" alt="Art Gallery" class="gallery-icon-image">
-                    <span class="gallery-label"></span>
-                </a>
-
-                <a class="gallery-icon-card" href="hobby-gallery.html" data-label="Hobby Gallery">
-                    <img src="lion-dance.png" alt="Hobby Gallery" class="gallery-icon-image">
-                    <span class="gallery-label"></span>
-                </a>
-
-                <a class="gallery-icon-card" href="daily-life-gallery.html" data-label="Daily Life Gallery">
-                    <img src="seal.png" alt="Daily Life Gallery" class="gallery-icon-image">
-                    <span class="gallery-label"></span>
-                </a>
-
-                <a class="gallery-icon-card" href="bubble-tea-gallery.html" data-label="Bubble Tea Gallery">
-                    <img src="bubble-tea.png" alt="Bubble Tea Gallery" class="gallery-icon-image">
-                    <span class="gallery-label"></span>
-                </a>
-
-                <a class="gallery-icon-card" href="goals-gallery.html" data-label="Goals Gallery">
-                    <img src="computer-fish.png" alt="Goals Gallery" class="gallery-icon-image">
-                    <span class="gallery-label"></span>
-                </a>
-
-            </div>
-        </section>
-
-        <section id="about" class="info-panel">
-            <h2>About Me</h2>
-            <p>I’m a curious student who loves learning by creating. I enjoy drawing, exploring new ideas, and turning interests into projects that feel personal and meaningful.</p>
-        </section>
-
-        <section id="contact" class="info-panel">
-            <h2>Contact</h2>
-            <p>Thanks for visiting my site. I’m always happy to connect with people who enjoy creativity, learning, and thoughtful projects.</p>
-        </section>
-
-        <audio id="pencilSound" preload="auto" src="pencil-scratch.mp3"></audio>
-
-        <script>
-            const cards = document.querySelectorAll('.gallery-icon-card');
-            const sound = document.getElementById('pencilSound');
-            const natureTrail = document.getElementById('nature-trail');
-
-            function createNaturePiece(x, y) {
-                const piece = document.createElement('div');
-                const types = ['petal', 'leaf', 'flower'];
-                const type = types[Math.floor(Math.random() * types.length)];
-                piece.className = `nature-piece ${type}`;
-                piece.style.left = `${x}px`;
-                piece.style.top = `${y}px`;
-                piece.style.setProperty('--rotate', `${Math.random() * 360}deg`);
-                piece.style.setProperty('--drift-x', `${(Math.random() - 0.5) * 80}px`);
-                natureTrail.appendChild(piece);
-
-                setTimeout(() => piece.remove(), 1100);
-            }
-
-            let lastSpawnTime = 0;
-            const spawnInterval = 110;
-
-            document.addEventListener('mousemove', (event) => {
-                const now = performance.now();
-                if (now - lastSpawnTime < spawnInterval) {
-                    return;
-                }
-                lastSpawnTime = now;
-                createNaturePiece(event.clientX, event.clientY);
-            });
-
-            function typeLabel(label, text) {
-                label.textContent = '';
-                let i = 0;
-                const interval = setInterval(() => {
-                    label.textContent += text[i] || '';
-                    i += 1;
-                    if (i >= text.length) {
-                        clearInterval(interval);
-                    }
-                }, 35);
-                label.dataset.interval = interval;
-            }
-
-            cards.forEach(card => {
-                const label = card.querySelector('.gallery-label');
-                const text = card.dataset.label;
-
-                card.addEventListener('mouseenter', () => {
-                    if (sound) {
-                        sound.currentTime = 0;
-                        sound.play().catch(() => {});
-                    }
-                    label.textContent = '';
-                    typeLabel(label, text);
-                });
-
-                card.addEventListener('mouseleave', () => {
-                    if (sound) {
-                        sound.pause();
-                        sound.currentTime = 0;
-                    }
-                    clearInterval(label.dataset.interval);
-                    label.textContent = '';
-                });
-            });
-        </script>
-
+        <footer class="site-footer">
+            <a href="index.html">Shaugnessy</a>
+            <span>A small collection of things I love</span>
+        </footer>
     </body>
 </html>
